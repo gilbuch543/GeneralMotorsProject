@@ -9,16 +9,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class HomePage{
 
     WebDriver driver;
-    //img[contains(@src, 'default/x-gray.svg')src="/images/CENTRAL_1024_ynet_logo.png"
     By button = By.xpath("//*[contains(@class,'NKcBbd')]");
     String homepage = "homepage";
     final static public Integer defaultTimeout =10;
     protected long defaultWaitIntervals = 2;
-    final static public Integer markElementInMS = 100;
-    final static public Integer sleepBetweenMarkAndUnmarkInMS =10;
     public Boolean markElementByDefault = true;
-    WebElement clickResult;
-   ;
 
 
 
