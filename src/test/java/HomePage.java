@@ -1,21 +1,22 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class HomePage{
+import java.io.File;
+import java.io.IOException;
+
+public class HomePage {
 
     WebDriver driver;
     By button = By.xpath("//*[contains(@class,'NKcBbd')]");
-    String homepage = "homepage";
-    final static public Integer defaultTimeout =10;
-    protected long defaultWaitIntervals = 2;
+    String homepage = "homepage 'start' button";
+    final static public Integer defaultTimeout = 10;
+    protected long defaultWaitIntervals = 3;
     public Boolean markElementByDefault = true;
 
-
+    By buttonToStart = By.xpath("//button[text()='Start']");
 
   /*  @FindBy(
             how = How.XPATH,
@@ -56,49 +57,49 @@ public class HomePage{
 
     public String WaitForResults() {
         WebDriverWait wait = new WebDriverWait(this.driver, 5L);
-        WebElement wb1 = (WebElement)wait.until(ExpectedConditions.presenceOfElementLocated(By.id("finish")));
+        WebElement wb1 =wait.until(ExpectedConditions.presenceOfElementLocated(By.id("finish")));
         if (!wb1.isDisplayed()) {
-            System.out.println("NOT");
+            System.out.println("Not finished loading");
         }
 
         return wb1.getText();
     }
 
 
-
     public void navigate(String url) {
         driver.navigate().to(url);
     }
 
-    public void clickOnCoronaNews() {
+    public void clickOnButton() {
         try {
-            if (isDisplayed(button, 5)) {
-                System.out.println(String.format("Trying to click on %s", homepage));
-                clickOnItem(button);
+            System.out.println("Trying to find button");
+            if (isDisplayed(buttonToStart, 3)) {
+                clickOnItem(buttonToStart);
             }
-        } catch(Exception e){
-            System.out.println(String.format("Unable to find button %s"));
+        } catch (Exception e) {
+            System.out.println(String.format("Unable to find button %s",buttonToStart));
         }
     }
 
     public void clickOnItem(By locator) {
+        System.out.println(String.format("Trying to click on %s",locator));
         driver.findElement(locator).click();
-        //click(locator,true);
+        System.out.println(String.format("Clicked on %s",locator));
     }
 
 
-    public void highlightElement()  {
-        WebElement elem = driver.findElement(button);
+    public void highlightElement(By locator) {
+        WebElement elem = driver.findElement(locator);
         // draw a border around the found element
         if (driver instanceof JavascriptExecutor) {
-            ((JavascriptExecutor)driver).executeScript("arguments[0].style.border='3px solid red'", elem);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].style.border='3px solid red'", elem);
         }
     }
 
 
-    public Boolean isDisplayed(By locator , Integer... optionalTimeout) {
+    public Boolean isDisplayed(By locator, Integer... optionalTimeout) {
         Integer timeout = defaultTimeout;
-        if (optionalTimeout != null){
+        if (optionalTimeout != null) {
             timeout = (optionalTimeout.length > 0) ? optionalTimeout[0] : defaultTimeout;
         }
         return waitForElementVisibility(locator, timeout);
@@ -107,6 +108,7 @@ public class HomePage{
     public Boolean waitForElementVisibility(By locator, Integer... timeout) {
         return this.waitForElementVisibility(locator, markElementByDefault, timeout);
     }
+
     public Boolean waitForElementVisibility(By locator, Boolean activateMarkElement, Integer... timeout) {
         try {
             WebElement element = waitGenerator(timeout).until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -114,14 +116,16 @@ public class HomePage{
                 return false;
             }
             if (activateMarkElement) {
-                highlightElement();
+                highlightElement(locator);
             }
             return true;
         } catch (Exception e) {
             return false;
         }
     }
+
     private WebDriverWait waitGenerator(Integer... timeout) {
         return new WebDriverWait(driver, (timeout.length > 0) ? timeout[0] : defaultTimeout, defaultWaitIntervals);
     }
+
 }
