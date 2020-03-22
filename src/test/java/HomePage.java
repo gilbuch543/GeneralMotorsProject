@@ -74,6 +74,7 @@ public class HomePage {
         try {
             System.out.println("Trying to find button");
             if (isDisplayed(buttonToStart, 3)) {
+                System.out.println(String.format("element %s displayed",buttonToStart));
                 clickOnItem(buttonToStart);
             }
         } catch (Exception e) {

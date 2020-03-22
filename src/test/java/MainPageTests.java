@@ -7,10 +7,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.io.IOException;
 
-import static org.testng.Assert.assertTrue;
 
 public class MainPageTests extends BaseFrontEnd {
 
